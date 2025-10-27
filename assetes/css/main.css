@@ -1,0 +1,67 @@
+/* header */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+nav li {
+    list-style: none;
+}
+
+.line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.project-item {
+    transition: all 0.3s ease;
+}
+
+/* تحسينات للـ Lightbox */
+#lightbox {
+    backdrop-filter: blur(5px);
+}
+
+#lightbox-img {
+    animation: zoomIn 0.3s ease;
+}
+
+@keyframes zoomIn {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* تحسينات للفلترة */
+select:focus {
+    outline: none;
+    ring: 2px;
+    ring-color: #3B82F6;
+}
+
+/* swiper */
+.swiper {
+    padding: 30px 10px 50px !important;
+}
+
+.service-card {
+    height: 100%;
+    transition: all 0.3s ease;
+}
+
+.service-card:hover {
+    transform: translateY(-10px);
+}
+
+.gradient-bg {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
