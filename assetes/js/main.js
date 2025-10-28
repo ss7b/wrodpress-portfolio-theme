@@ -1,50 +1,54 @@
-document.addEventListener('DOMContentLoaded', function () {
-    const contactForm = document.getElementById('contact-form');
-    const formMessage = document.getElementById('form-message');
+// document.addEventListener('DOMContentLoaded', function () {
+//     const contactForm = document.getElementById('contact-form');
+//     const formMessage = document.getElementById('form-message');
 
-    contactForm.addEventListener('submit', function (e) {
-        e.preventDefault();
+//     contactForm.addEventListener('submit', function (e) {
+//         e.preventDefault();
 
-        // هنا يمكنك إضافة كود AJAX لإرسال النموذج
-        // مثال:
-        /*
-        const formData = new FormData(contactForm);
-        
-        fetch('<?php echo admin_url('admin-ajax.php'); ?>', {
-            method: 'POST',
-            body: formData
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                formMessage.className = 'mt-4 p-4 bg-green-100 text-green-700 rounded-lg';
-                formMessage.textContent = 'Thank you! Your message has been sent.';
-                contactForm.reset();
-            } else {
-                formMessage.className = 'mt-4 p-4 bg-red-100 text-red-700 rounded-lg';
-                formMessage.textContent = 'Sorry, there was an error sending your message. Please try again.';
-            }
-            formMessage.classList.remove('hidden');
-        })
-        .catch(error => {
-            formMessage.className = 'mt-4 p-4 bg-red-100 text-red-700 rounded-lg';
-            formMessage.textContent = 'Sorry, there was an error sending your message. Please try again.';
-            formMessage.classList.remove('hidden');
-        });
-        */
+//         // هنا يمكنك إضافة كود AJAX لإرسال النموذج
+//         // مثال:
+//         /*
+//         const formData = new FormData(contactForm);
 
-        // عرض رسالة نجاح (بدون إرسال حقيقي)
-        formMessage.className = 'mt-4 p-4 bg-green-100 text-green-700 rounded-lg';
-        formMessage.textContent = 'Thank you! Your message has been sent successfully.';
-        formMessage.classList.remove('hidden');
-        contactForm.reset();
+//         fetch('<?php echo admin_url('admin-ajax.php'); ?>', {
+//             method: 'POST',
+//             body: formData
+//         })
+//         .then(response => response.json())
+//         .then(data => {
+//             if (data.success) {
+//                 formMessage.className = 'mt-4 p-4 bg-green-100 text-green-700 rounded-lg';
+//                 formMessage.textContent = 'Thank you! Your message has been sent.';
+//                 contactForm.reset();
+//             } else {
+//                 formMessage.className = 'mt-4 p-4 bg-red-100 text-red-700 rounded-lg';
+//                 formMessage.textContent = 'Sorry, there was an error sending your message. Please try again.';
+//             }
+//             formMessage.classList.remove('hidden');
+//         })
+//         .catch(error => {
+//             formMessage.className = 'mt-4 p-4 bg-red-100 text-red-700 rounded-lg';
+//             formMessage.textContent = 'Sorry, there was an error sending your message. Please try again.';
+//             formMessage.classList.remove('hidden');
+//         });
+//         */
 
-        // إخفاء الرسالة بعد 5 ثوانٍ
-        setTimeout(() => {
-            formMessage.classList.add('hidden');
-        }, 5000);
-    });
-});
+//         // عرض رسالة نجاح (بدون إرسال حقيقي)
+//         formMessage.className = 'mt-4 p-4 bg-green-100 text-green-700 rounded-lg';
+//         formMessage.textContent = 'Thank you! Your message has been sent successfully.';
+//         formMessage.classList.remove('hidden');
+//         contactForm.reset();
+
+//         // إخفاء الرسالة بعد 5 ثوانٍ
+//         setTimeout(() => {
+//             formMessage.classList.add('hidden');
+//         }, 5000);
+//     });
+// });
+
+
+
+
 
 
 // Theme Toggle
@@ -109,10 +113,14 @@ if (savedTheme === 'dark') {
 
 
 // تهيئة Swiper
-var swiper = new Swiper(".servicesSwiper", {
+var swiperone = new Swiper(".servicesSwiper", {
     slidesPerView: 1,
     spaceBetween: 20,
     loop: true,
+    autoplay: {
+        delay: 2000,
+        disableOnInteraction: false,
+    },
     pagination: {
         el: ".swiper-pagination",
         clickable: true,
@@ -129,4 +137,75 @@ var swiper = new Swiper(".servicesSwiper", {
             slidesPerView: 3,
         },
     },
+});
+
+
+// 
+const galleryImages = document.querySelectorAll(".gallery-img");
+const lightbox = document.getElementById("lightbox");
+const closeBtn = document.getElementById("close-lightbox");
+const wrapper = document.getElementById("lightbox-wrapper");
+let swiper;
+
+// فتح الـ Lightbox عند الضغط على أي صورة
+galleryImages.forEach((img) => {
+    img.addEventListener("click", () => {
+        const currentIndex = parseInt(img.dataset.index);
+
+        // مسح الصور القديمة من الـ swiper
+        wrapper.innerHTML = "";
+
+        // بناء جميع الشرائح (slides)
+        galleryImages.forEach((g) => {
+            const fullSrc = g.dataset.full;
+            const altText = g.alt || "";
+            const slide = document.createElement("div");
+            slide.classList.add("swiper-slide", "flex", "justify-center");
+            slide.innerHTML = `
+          <img src="${fullSrc}" alt="${altText}" class="max-h-[90vh] object-contain rounded-lg">
+        `;
+            wrapper.appendChild(slide);
+        });
+
+        // إظهار Lightbox
+        lightbox.classList.remove("hidden");
+        lightbox.classList.add("flex");
+        document.body.style.overflow = "hidden";
+
+        // تهيئة Swiper
+        swiper = new Swiper(".lightbox-swiper", {
+            initialSlide: currentIndex,
+            pagination: {
+                el: ".swiper-pagination",
+                clickable: true,
+            },
+            navigation: {
+                nextEl: ".swiper-button-next",
+                prevEl: ".swiper-button-prev",
+            },
+            loop: true,
+            slidesPerView: 1,
+            centeredSlides: true,
+        });
+    });
+});
+
+// إغلاق الـ Lightbox
+const closeLightbox = () => {
+    lightbox.classList.add("hidden");
+    lightbox.classList.remove("flex");
+    document.body.style.overflow = "auto";
+    if (swiper) swiper.destroy(true, true);
+};
+
+closeBtn.addEventListener("click", closeLightbox);
+
+// إغلاق بالضغط على الخلفية
+lightbox.addEventListener("click", (e) => {
+    if (e.target === lightbox) closeLightbox();
+});
+
+// إغلاق بالـ ESC
+document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeLightbox();
 });

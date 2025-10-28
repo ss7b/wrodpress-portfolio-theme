@@ -4,7 +4,9 @@
     margin: 0;
     padding: 0;
 }
-
+.top-p{
+    padding-top: 110px;
+}
 nav li {
     list-style: none;
 }
@@ -49,7 +51,7 @@ select:focus {
 }
 
 /* swiper */
-.swiper {
+.servicesSwiper {
     padding: 30px 10px 50px !important;
 }
 

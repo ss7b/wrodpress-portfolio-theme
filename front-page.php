@@ -50,7 +50,7 @@
             </div>
             <div class="md:w-2/3 md:pl-12">
                 <h3 class="text-2xl font-semibold mb-4"><?php echo get_theme_mod('about_title', 'Passionate Web Developer'); ?></h3>
-                <div class="prose dark:prose-invert max-w-none">
+                <div class="prose dark:prose-invert max-w-none mb-3">
                     <?php
                     $about_content = get_theme_mod('about_content');
                     if ($about_content) {
@@ -132,7 +132,7 @@
 <section id="experience" class="py-16 bg-white dark:bg-gray-800">
     <div class="container mx-auto px-6">
         <h2 class="text-3xl font-bold text-center mb-12">Experience & Education</h2>
-        
+
         <div class="relative">
             <div class="absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-gradient-to-b from-primary to-highlight hidden lg:block"></div>
 
@@ -153,10 +153,10 @@
                         )
                     )
                 );
-                
+
                 $experiences = new WP_Query($args);
                 $index = 0;
-                
+
                 if ($experiences->have_posts()) :
                     while ($experiences->have_posts()) : $experiences->the_post();
                         $experience_type = get_field('experience_type');
@@ -165,15 +165,15 @@
                         $company = get_field('company');
                         $position = get_field('position');
                         $location = get_field('location');
-                        
+
                         // تنسيق التاريخ
                         $start_date_formatted = $start_date ? date('M Y', strtotime($start_date)) : '';
                         $end_date_formatted = $end_date ? date('M Y', strtotime($end_date)) : 'Present';
                         $date_display = $start_date_formatted . ' - ' . $end_date_formatted;
-                        
+
                         // لون مختلف حسب نوع الخبرة
                         $badge_color = $experience_type === 'education' ? 'bg-accent' : 'bg-highlight';
-                        
+
                         $index++;
                 ?>
                         <div class="timeline-item flex flex-col lg:flex-row items-center">
@@ -227,12 +227,12 @@
                                 </div>
                             <?php endif; ?>
                         </div>
-                <?php
+                    <?php
                     endwhile;
                     wp_reset_postdata();
                 else :
                     // عرض محتوى افتراضي إذا لم توجد خبرات
-                ?>
+                    ?>
                     <div class="text-center py-12">
                         <p class="text-gray-600 dark:text-gray-300 text-lg mb-4">لا توجد خبرات مضافة بعد</p>
                         <a href="<?php echo admin_url('post-new.php?post_type=experience'); ?>" class="inline-block bg-highlight text-white px-6 py-2 rounded-lg hover:bg-opacity-90 transition-colors">
@@ -249,7 +249,7 @@
 <section id="projects" class="py-16 bg-gray-100 dark:bg-gray-900">
     <div class="container mx-auto px-6">
         <h2 class="text-3xl font-bold text-center mb-12">My Projects</h2>
-        
+
         <?php
         $projects = new WP_Query(array(
             'post_type' => 'project',
@@ -266,11 +266,11 @@
         if ($projects->have_posts()) :
         ?>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <?php while ($projects->have_posts()) : $projects->the_post(); 
+                <?php while ($projects->have_posts()) : $projects->the_post();
                     $project_categories = get_the_terms(get_the_ID(), 'project_category');
                     $project_technologies = get_the_terms(get_the_ID(), 'project_technology');
                     $project_image = get_the_post_thumbnail_url(get_the_ID(), 'large');
-                    
+
                     // جلب أول صورة من المعرض إذا لم توجد صورة مميزة
                     if (!$project_image) {
                         $gallery_images = get_project_gallery(get_the_ID());
@@ -281,12 +281,11 @@
                 ?>
                     <div class="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 group">
                         <div class="h-48 relative overflow-hidden">
-                            <?php if($project_image): ?>
-                                <img 
-                                    src="<?php echo esc_url($project_image); ?>" 
+                            <?php if ($project_image): ?>
+                                <img
+                                    src="<?php echo esc_url($project_image); ?>"
                                     alt="<?php the_title(); ?>"
-                                    class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-                                >
+                                    class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
                             <?php else: ?>
                                 <div class="w-full h-full bg-gradient-to-r from-primary to-accent flex items-center justify-center">
                                     <span class="text-white text-lg">No Image</span>
@@ -297,49 +296,50 @@
                                     View Details
                                 </a>
                             </div>
-                            <?php if($project_categories): ?>
-                            <div class="absolute top-4 left-4">
-                                <?php foreach($project_categories as $category): ?>
-                                    <span class="bg-highlight text-white text-xs px-2 py-1 rounded mr-2">
-                                        <?php echo esc_html($category->name); ?>
-                                    </span>
-                                <?php endforeach; ?>
-                            </div>
+                            <?php if ($project_categories): ?>
+                                <div class="absolute top-4 left-4">
+                                    <?php foreach ($project_categories as $category): ?>
+                                        <span class="bg-highlight text-white text-xs px-2 py-1 rounded mr-2">
+                                            <?php echo esc_html($category->name); ?>
+                                        </span>
+                                    <?php endforeach; ?>
+                                </div>
                             <?php endif; ?>
                         </div>
-                        
+
                         <div class="p-6">
                             <h3 class="text-xl font-semibold mb-2"><?php the_title(); ?></h3>
                             <p class="text-gray-600 dark:text-gray-300 mb-4 line-clamp-2">
                                 <?php echo get_the_excerpt(); ?>
                             </p>
-                            
-                            <?php if($project_technologies): ?>
-                            <div class="flex flex-wrap gap-2 mb-4">
-                                <?php foreach($project_technologies as $tech): ?>
-                                    <span class="text-xs bg-highlight/20 text-highlight px-2 py-1 rounded">
-                                        <?php echo esc_html($tech->name); ?>
-                                    </span>
-                                <?php endforeach; ?>
-                            </div>
+
+                            <?php if ($project_technologies): ?>
+                                <div class="flex flex-wrap gap-2 mb-4">
+                                    <?php foreach ($project_technologies as $tech): ?>
+                                        <span class="text-xs bg-highlight/20 text-highlight px-2 py-1 rounded">
+                                            <?php echo esc_html($tech->name); ?>
+                                        </span>
+                                    <?php endforeach; ?>
+                                </div>
                             <?php endif; ?>
-                            
+
                             <div class="flex justify-between items-center">
                                 <a href="<?php the_permalink(); ?>" class="text-accent hover:text-primary transition-colors font-semibold text-sm">
                                     Read More
                                 </a>
-                                <?php 
+                                <?php
                                 $project_url = get_post_meta(get_the_ID(), 'project_url', true);
-                                if($project_url): 
+                                if ($project_url):
                                 ?>
-                                <a href="<?php echo esc_url($project_url); ?>" target="_blank" class="text-gray-500 hover:text-accent transition-colors" title="Live Demo">
-                                    <i class="fas fa-external-link-alt"></i>
-                                </a>
+                                    <a href="<?php echo esc_url($project_url); ?>" target="_blank" class="text-gray-500 hover:text-accent transition-colors" title="Live Demo">
+                                        <i class="fas fa-external-link-alt"></i>
+                                    </a>
                                 <?php endif; ?>
                             </div>
                         </div>
                     </div>
-                <?php endwhile; wp_reset_postdata(); ?>
+                <?php endwhile;
+                wp_reset_postdata(); ?>
             </div>
         <?php else : ?>
             <p class="text-center">No projects found.</p>
@@ -350,6 +350,84 @@
                 <span>View All Projects</span>
                 <i class="fas fa-arrow-right ml-2"></i>
             </a>
+        </div>
+    </div>
+</section>
+
+<section id="services" class="py-16 bg-gray-100 dark:bg-gray-900">
+    <div class="container mx-auto px-6">
+        <h2 class="text-4xl font-bold text-center mb-4 text-gray-800 dark:text-white">
+            <?php echo esc_html(get_theme_mod('services_title', 'خدمات الويب الشاملة')); ?>
+        </h2>
+        <p class="text-lg text-center mb-12 text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+            <?php echo esc_html(get_theme_mod('services_description', 'نقدم مجموعة متكاملة من خدمات تطوير الويب لتحويل أفكارك إلى واقع رقمي متميز')); ?>
+        </p>
+
+        <!-- Swiper Container -->
+        <div class="swiper servicesSwiper">
+            <div class="swiper-wrapper">
+                <?php
+                $services_count = get_theme_mod('services_count', 3);
+                for ($i = 1; $i <= $services_count; $i++):
+                    $service_icon = get_theme_mod("service_{$i}_icon");
+                    $service_title = get_theme_mod("service_{$i}_title");
+                    $service_description = get_theme_mod("service_{$i}_description");
+                    $service_features = get_theme_mod("service_{$i}_features");
+
+                    if (!empty($service_title)):
+                ?>
+                        <div class="swiper-slide">
+                            <div class="service-card bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-200 dark:border-gray-700">
+                                <div class="w-14 h-14 gradient-bg rounded-full flex items-center justify-center mb-4 mx-auto">
+                                    <i class="<?php echo esc_attr($service_icon) ?> text-white"></i>
+                                </div>
+                                <h3 class="text-xl font-bold text-center mb-3 text-gray-800 dark:text-white">
+                                    <?php echo esc_html($service_title); ?>
+                                </h3>
+                                <p class="text-gray-600 dark:text-gray-300 text-center">
+                                    <?php echo esc_html($service_description); ?>
+                                </p>
+                                <?php if (!empty($service_features)): ?>
+                                    <ul class="mt-4 space-y-2">
+                                        <?php
+                                        $features = explode(',', $service_features);
+                                        foreach ($features as $feature):
+                                            if (!empty(trim($feature))):
+                                        ?>
+                                                <li class="flex items-center text-sm text-gray-600 dark:text-gray-300">
+                                                    <svg class="w-4 h-4 text-green-500 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                                    </svg>
+                                                    <?php echo esc_html(trim($feature)); ?>
+                                                </li>
+                                        <?php
+                                            endif;
+                                        endforeach;
+                                        ?>
+                                    </ul>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                <?php
+                    endif;
+                endfor;
+                ?>
+            </div>
+
+            <!-- أزرار التنقل -->
+            <div class="swiper-button-next bg-white dark:bg-gray-800 shadow-lg rounded-full w-12 h-12 flex items-center justify-center">
+                <svg class="w-6 h-6 text-gray-700 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                </svg>
+            </div>
+            <div class="swiper-button-prev bg-white dark:bg-gray-800 shadow-lg rounded-full w-12 h-12 flex items-center justify-center">
+                <svg class="w-6 h-6 text-gray-700 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                </svg>
+            </div>
+
+            <!-- نقاط التمرير -->
+            <div class="swiper-pagination"></div>
         </div>
     </div>
 </section>
@@ -437,321 +515,13 @@
                     </div>
                     <button type="submit" class="px-6 py-3 bg-highlight text-white font-medium rounded-lg hover:bg-accent transition-colors">Send Message</button>
                 </form>
-                
+
                 <div id="form-message" class="mt-4 hidden"></div>
             </div>
         </div>
     </div>
 </section>
-<!-- services -->
-  <!-- قسم الخدمات -->
-    <section id="services" class="py-16 bg-gray-100 dark:bg-gray-900">
-        <div class="container mx-auto px-6">
-            <h2 class="text-4xl font-bold text-center mb-4 text-gray-800 dark:text-white">خدمات الويب الشاملة</h2>
-            <p class="text-lg text-center mb-12 text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-                نقدم مجموعة متكاملة من خدمات تطوير الويب لتحويل أفكارك إلى واقع رقمي متميز
-            </p>
-            
-            <!-- Swiper Container -->
-            <div class="swiper servicesSwiper">
-                <div class="swiper-wrapper">
-                    <!-- خدمة 1 -->
-                    <div class="swiper-slide">
-                        <div class="service-card bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-200 dark:border-gray-700">
-                            <div class="w-14 h-14 gradient-bg rounded-full flex items-center justify-center mb-4 mx-auto">
-                                <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
-                                </svg>
-                            </div>
-                            <h3 class="text-xl font-bold text-center mb-3 text-gray-800 dark:text-white">تطوير مواقع الويب</h3>
-                            <p class="text-gray-600 dark:text-gray-300 text-center">
-                                تصميم وتطوير مواقع ويب احترافية متجاوبة مع جميع الأجهزة باستخدام أحدث التقنيات مثل HTML5, CSS3, JavaScript.
-                            </p>
-                            <ul class="mt-4 space-y-2">
-                                <li class="flex items-center text-sm text-gray-600 dark:text-gray-300">
-                                    <svg class="w-4 h-4 text-green-500 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                    </svg>
-                                    تصميم متجاوب مع جميع الشاشات
-                                </li>
-                                <li class="flex items-center text-sm text-gray-600 dark:text-gray-300">
-                                    <svg class="w-4 h-4 text-green-500 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                    </svg>
-                                    تحسين سرعة الأداء
-                                </li>
-                                <li class="flex items-center text-sm text-gray-600 dark:text-gray-300">
-                                    <svg class="w-4 h-4 text-green-500 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                    </svg>
-                                    دعم جميع المتصفحات
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    
-                    <!-- خدمة 2 -->
-                    <div class="swiper-slide">
-                        <div class="service-card bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-200 dark:border-gray-700">
-                            <div class="w-14 h-14 gradient-bg rounded-full flex items-center justify-center mb-4 mx-auto">
-                                <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
-                                </svg>
-                            </div>
-                            <h3 class="text-xl font-bold text-center mb-3 text-gray-800 dark:text-white">تطبيقات الويب الديناميكية</h3>
-                            <p class="text-gray-600 dark:text-gray-300 text-center">
-                                بناء تطبيقات ويب تفاعلية باستخدام إطارات العمل الحديثة مثل React, Vue.js, Angular مع دعم قاعدة البيانات.
-                            </p>
-                            <ul class="mt-4 space-y-2">
-                                <li class="flex items-center text-sm text-gray-600 dark:text-gray-300">
-                                    <svg class="w-4 h-4 text-green-500 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                    </svg>
-                                    تطبيقات أحادية الصفحة (SPA)
-                                </li>
-                                <li class="flex items-center text-sm text-gray-600 dark:text-gray-300">
-                                    <svg class="w-4 h-4 text-green-500 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                    </svg>
-                                    واجهات برمجة التطبيقات (API)
-                                </li>
-                                <li class="flex items-center text-sm text-gray-600 dark:text-gray-300">
-                                    <svg class="w-4 h-4 text-green-500 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                    </svg>
-                                    إدارة الحالة المتقدمة
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    
-                    <!-- خدمة 3 -->
-                    <div class="swiper-slide">
-                        <div class="service-card bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-200 dark:border-gray-700">
-                            <div class="w-14 h-14 gradient-bg rounded-full flex items-center justify-center mb-4 mx-auto">
-                                <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"></path>
-                                </svg>
-                            </div>
-                            <h3 class="text-xl font-bold text-center mb-3 text-gray-800 dark:text-white">أنظمة إدارة المحتوى</h3>
-                            <p class="text-gray-600 dark:text-gray-300 text-center">
-                                تطوير وتخصيص أنظمة إدارة المحتوى مثل WordPress, Joomla, Drupal مع تصميم قوالب وإضافات مخصصة.
-                            </p>
-                            <ul class="mt-4 space-y-2">
-                                <li class="flex items-center text-sm text-gray-600 dark:text-gray-300">
-                                    <svg class="w-4 h-4 text-green-500 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                    </svg>
-                                    تطوير القوالب المخصصة
-                                </li>
-                                <li class="flex items-center text-sm text-gray-600 dark:text-gray-300">
-                                    <svg class="w-4 h-4 text-green-500 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                    </svg>
-                                    بناء الإضافات والوحدات
-                                </li>
-                                <li class="flex items-center text-sm text-gray-600 dark:text-gray-300">
-                                    <svg class="w-4 h-4 text-green-500 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                    </svg>
-                                    تهيئة وتحسين الأداء
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    
-                    <!-- خدمة 4 -->
-                    <div class="swiper-slide">
-                        <div class="service-card bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-200 dark:border-gray-700">
-                            <div class="w-14 h-14 gradient-bg rounded-full flex items-center justify-center mb-4 mx-auto">
-                                <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-                                </svg>
-                            </div>
-                            <h3 class="text-xl font-bold text-center mb-3 text-gray-800 dark:text-white">تحسين محركات البحث (SEO)</h3>
-                            <p class="text-gray-600 dark:text-gray-300 text-center">
-                                تحسين مواقع الويب لمحركات البحث لزيادة الظهور في النتائج وجذب المزيد من الزوار المستهدفين.
-                            </p>
-                            <ul class="mt-4 space-y-2">
-                                <li class="flex items-center text-sm text-gray-600 dark:text-gray-300">
-                                    <svg class="w-4 h-4 text-green-500 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                    </svg>
-                                    تحسين الهيكل الداخلي
-                                </li>
-                                <li class="flex items-center text-sm text-gray-600 dark:text-gray-300">
-                                    <svg class="w-4 h-4 text-green-500 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                    </svg>
-                                    تحليل الكلمات المفتاحية
-                                </li>
-                                <li class="flex items-center text-sm text-gray-600 dark:text-gray-300">
-                                    <svg class="w-4 h-4 text-green-500 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                    </svg>
-                                    بناء الروابط الخلفية
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    
-                    <!-- خدمة 5 -->
-                    <div class="swiper-slide">
-                        <div class="service-card bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-200 dark:border-gray-700">
-                            <div class="w-14 h-14 gradient-bg rounded-full flex items-center justify-center mb-4 mx-auto">
-                                <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
-                                </svg>
-                            </div>
-                            <h3 class="text-xl font-bold text-center mb-3 text-gray-800 dark:text-white">تطبيقات الجوال الهجينة</h3>
-                            <p class="text-gray-600 dark:text-gray-300 text-center">
-                                تطوير تطبيقات جوال هجينة تعمل على منصتي iOS و Android باستخدام تقنيات الويب مثل React Native و Flutter.
-                            </p>
-                            <ul class="mt-4 space-y-2">
-                                <li class="flex items-center text-sm text-gray-600 dark:text-gray-300">
-                                    <svg class="w-4 h-4 text-green-500 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                    </svg>
-                                    تطوير متعدد المنصات
-                                </li>
-                                <li class="flex items-center text-sm text-gray-600 dark:text-gray-300">
-                                    <svg class="w-4 h-4 text-green-500 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                    </svg>
-                                    واجهات مستخدم متجاوبة
-                                </li>
-                                <li class="flex items-center text-sm text-gray-600 dark:text-gray-300">
-                                    <svg class="w-4 h-4 text-green-500 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                    </svg>
-                                    تكامل مع APIs المحلية
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    
-                    <!-- خدمة 6 -->
-                    <div class="swiper-slide">
-                        <div class="service-card bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-200 dark:border-gray-700">
-                            <div class="w-14 h-14 gradient-bg rounded-full flex items-center justify-center mb-4 mx-auto">
-                                <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
-                                </svg>
-                            </div>
-                            <h3 class="text-xl font-bold text-center mb-3 text-gray-800 dark:text-white">الأمن السيبراني</h3>
-                            <p class="text-gray-600 dark:text-gray-300 text-center">
-                                تأمين تطبيقات الويب ضد الهجمات الإلكترونية واختبار الاختراق وتطبيق أفضل ممارسات الأمن السيبراني.
-                            </p>
-                            <ul class="mt-4 space-y-2">
-                                <li class="flex items-center text-sm text-gray-600 dark:text-gray-300">
-                                    <svg class="w-4 h-4 text-green-500 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                    </svg>
-                                    حماية من الثغرات الشائعة
-                                </li>
-                                <li class="flex items-center text-sm text-gray-600 dark:text-gray-300">
-                                    <svg class="w-4 h-4 text-green-500 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                    </svg>
-                                    تشفير البيانات الحساسة
-                                </li>
-                                <li class="flex items-center text-sm text-gray-600 dark:text-gray-300">
-                                    <svg class="w-4 h-4 text-green-500 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                    </svg>
-                                    تدقيق ومراجعة الأمن
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    
-                    <!-- خدمة 7 -->
-                    <div class="swiper-slide">
-                        <div class="service-card bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-200 dark:border-gray-700">
-                            <div class="w-14 h-14 gradient-bg rounded-full flex items-center justify-center mb-4 mx-auto">
-                                <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4"></path>
-                                </svg>
-                            </div>
-                            <h3 class="text-xl font-bold text-center mb-3 text-gray-800 dark:text-white">التجارة الإلكترونية</h3>
-                            <p class="text-gray-600 dark:text-gray-300 text-center">
-                                تطوير منصات تجارة إلكترونية متكاملة مع أنظمة الدفع وإدارة المخزون وتجربة مستخدم محسنة.
-                            </p>
-                            <ul class="mt-4 space-y-2">
-                                <li class="flex items-center text-sm text-gray-600 dark:text-gray-300">
-                                    <svg class="w-4 h-4 text-green-500 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                    </svg>
-                                    متاجر إلكترونية مخصصة
-                                </li>
-                                <li class="flex items-center text-sm text-gray-600 dark:text-gray-300">
-                                    <svg class="w-4 h-4 text-green-500 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                    </svg>
-                                    تكامل بوابات الدفع
-                                </li>
-                                <li class="flex items-center text-sm text-gray-600 dark:text-gray-300">
-                                    <svg class="w-4 h-4 text-green-500 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                    </svg>
-                                    إدارة الطلبات والمخزون
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    
-                    <!-- خدمة 8 -->
-                    <div class="swiper-slide">
-                        <div class="service-card bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-200 dark:border-gray-700">
-                            <div class="w-14 h-14 gradient-bg rounded-full flex items-center justify-center mb-4 mx-auto">
-                                <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
-                                </svg>
-                            </div>
-                            <h3 class="text-xl font-bold text-center mb-3 text-gray-800 dark:text-white">التحليلات والتقارير</h3>
-                            <p class="text-gray-600 dark:text-gray-300 text-center">
-                                تطوير لوحات تحكم تفاعلية وأنظمة تقارير متقدمة لتحليل بيانات الأعمال واتخاذ القرارات المستنيرة.
-                            </p>
-                            <ul class="mt-4 space-y-2">
-                                <li class="flex items-center text-sm text-gray-600 dark:text-gray-300">
-                                    <svg class="w-4 h-4 text-green-500 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                    </svg>
-                                    لوحات تحكم تفاعلية
-                                </li>
-                                <li class="flex items-center text-sm text-gray-600 dark:text-gray-300">
-                                    <svg class="w-4 h-4 text-green-500 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                    </svg>
-                                    تصور البيانات البياني
-                                </li>
-                                <li class="flex items-center text-sm text-gray-600 dark:text-gray-300">
-                                    <svg class="w-4 h-4 text-green-500 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                    </svg>
-                                    تقارير مخصصة وآلية
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- أزرار التنقل -->
-                <div class="swiper-button-next bg-white dark:bg-gray-800 shadow-lg rounded-full w-12 h-12 flex items-center justify-center">
-                    <svg class="w-6 h-6 text-gray-700 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                    </svg>
-                </div>
-                <div class="swiper-button-prev bg-white dark:bg-gray-800 shadow-lg rounded-full w-12 h-12 flex items-center justify-center">
-                    <svg class="w-6 h-6 text-gray-700 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-                    </svg>
-                </div>
-                
-                <!-- نقاط التمرير -->
-                <div class="swiper-pagination"></div>
-            </div>
-        </div>
-    </section>
+
+
 
 <?php get_footer(); ?>

@@ -1,6 +1,6 @@
 <?php get_header(); ?>
 
-<main>
+<main class="mt-20">
     <!-- سيتم تحميل المحتوى الديناميكي هنا -->
     <?php if (have_posts()) : while (have_posts()) : the_post(); ?>
         <article>

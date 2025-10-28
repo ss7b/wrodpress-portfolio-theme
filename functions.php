@@ -21,7 +21,7 @@ function devportfolio_scripts()
 
     // Font Awesome
     wp_enqueue_style('font-awesome', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
-    wp_enqueue_style('main-css', get_template_directory_uri() . '/assetes/css/main.css', array(), '1.0.3');
+    wp_enqueue_style('main-css', get_template_directory_uri() . '/assetes/css/main.css', array(), '1.0.4');
 
 
     // swiper
@@ -35,7 +35,7 @@ function devportfolio_scripts()
     // swiper
 
 
-    wp_enqueue_script('main-js', get_template_directory_uri() . '/assetes/js/main.js', array('jquery'), '1.0', true);
+    wp_enqueue_script('main-js', get_template_directory_uri() . '/assetes/js/main.js', array(), '2.0.2', true);
 }
 add_action('wp_enqueue_scripts', 'devportfolio_scripts');
 
@@ -483,8 +483,8 @@ function skills_shortcode($atts)
                     <i class="<?php echo $icon; ?> text-white text-xl"></i>
                 </div>
                 <h3 class="text-xl font-semibold mb-2"><?php echo $skill->post_title; ?></h3>
-                <p class="mb-4"><?php echo $skill->post_content; ?></p>
-                <div class="flex flex-wrap gap-2">
+                <?php echo $skill->post_content; ?>
+                <div class="flex flex-wrap gap-2 mt-2">
                     <?php
                     if ($technologies) {
                         $tech_array = explode(',', $technologies);
@@ -908,13 +908,104 @@ function get_project_first_image($post_id = null)
     return !empty($gallery) ? wp_get_attachment_image_url($gallery[0], 'large') : '';
 }
 
-// إنشاء صفحة الخيارات
-// if(function_exists('acf_add_options_page')) {
-//     acf_add_options_page(array(
-//         'page_title' => 'Projects Settings',
-//         'menu_title' => 'Projects Settings',
-//         'menu_slug' => 'projects-settings',
-//         'capability' => 'edit_posts',
-//         'redirect' => false
-//     ));
-// }
+// services custmize
+
+// إضافة إعدادات الخدمات إلى Customizer
+function mytheme_customize_services($wp_customize) {
+    // قسم الخدمات
+    $wp_customize->add_section('services_section', array(
+        'title' => __('الخدمات', 'mytheme'),
+        'priority' => 30,
+    ));
+
+    // عنوان قسم الخدمات
+    $wp_customize->add_setting('services_title', array(
+        'default' => 'خدمات الويب الشاملة',
+        'sanitize_callback' => 'sanitize_text_field',
+    ));
+
+    $wp_customize->add_control('services_title', array(
+        'label' => __('عنوان الخدمات', 'mytheme'),
+        'section' => 'services_section',
+        'type' => 'text',
+    ));
+
+    // وصف قسم الخدمات
+    $wp_customize->add_setting('services_description', array(
+        'default' => 'نقدم مجموعة متكاملة من خدمات تطوير الويب لتحويل أفكارك إلى واقع رقمي متميز',
+        'sanitize_callback' => 'sanitize_textarea_field',
+    ));
+
+    $wp_customize->add_control('services_description', array(
+        'label' => __('وصف الخدمات', 'mytheme'),
+        'section' => 'services_section',
+        'type' => 'textarea',
+    ));
+
+    // عدد الخدمات
+    $wp_customize->add_setting('services_count', array(
+        'default' => 3,
+        'sanitize_callback' => 'absint',
+    ));
+
+    $wp_customize->add_control('services_count', array(
+        'label' => __('عدد الخدمات', 'mytheme'),
+        'section' => 'services_section',
+        'type' => 'number',
+        'input_attrs' => array(
+            'min' => 1,
+            'max' => 10,
+        ),
+    ));
+
+    // إعدادات الخدمات الفردية
+    for ($i = 1; $i <= 10; $i++) {
+        // عنوان الخدمة
+        $wp_customize->add_setting("service_{$i}_icon", array(
+            'default' => '',
+            'sanitize_callback' => 'sanitize_text_field',
+        ));
+
+        $wp_customize->add_control("service_{$i}_icon", array(
+            'label' => sprintf(__(' الايقونة %d', 'mytheme'), $i),
+            'section' => 'services_section',
+            'type' => 'text',
+        ));
+
+        $wp_customize->add_setting("service_{$i}_title", array(
+            'default' => '',
+            'sanitize_callback' => 'sanitize_text_field',
+        ));
+
+        $wp_customize->add_control("service_{$i}_title", array(
+            'label' => sprintf(__('عنوان الخدمة %d', 'mytheme'), $i),
+            'section' => 'services_section',
+            'type' => 'text',
+        ));
+
+        // وصف الخدمة
+        $wp_customize->add_setting("service_{$i}_description", array(
+            'default' => '',
+            'sanitize_callback' => 'sanitize_textarea_field',
+        ));
+
+        $wp_customize->add_control("service_{$i}_description", array(
+            'label' => sprintf(__('وصف الخدمة %d', 'mytheme'), $i),
+            'section' => 'services_section',
+            'type' => 'textarea',
+        ));
+
+        // ميزات الخدمة (مفصولة بفاصلة)
+        $wp_customize->add_setting("service_{$i}_features", array(
+            'default' => '',
+            'sanitize_callback' => 'sanitize_textarea_field',
+        ));
+
+        $wp_customize->add_control("service_{$i}_features", array(
+            'label' => sprintf(__('ميزات الخدمة %d (مفصولة بفاصلة)', 'mytheme'), $i),
+            'section' => 'services_section',
+            'type' => 'textarea',
+        ));
+    }
+}
+add_action('customize_register', 'mytheme_customize_services');

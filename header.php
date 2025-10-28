@@ -54,11 +54,11 @@
             @apply lg:right-0 lg:left-auto lg:-translate-x-1/2;
         } */
              nav li a {
-            @apply px-4 py-2 text-primary dark:text-white hover:text-highlight transition;
+            @apply px-4 text-primary dark:text-white hover:text-highlight transition;
             }
 
             header nav li .sub-menu {
-            @apply absolute bg-white/90 dark:bg-gray-900/90 shadow-lg rounded-lg w-48 top-[70%] opacity-0 invisible transition-opacity duration-300 ease-in-out overflow-hidden;
+            @apply absolute bg-white/90 dark:bg-gray-900/90 shadow-lg rounded-lg w-48 top-[65%] opacity-0 invisible transition-opacity duration-300 ease-in-out overflow-hidden;
             }
 
             header nav li .sub-menu li a {
@@ -81,16 +81,23 @@
 
 <body <?php body_class('font-sans transition-colors duration-300'); ?>>
     <!-- Header & Navigation -->
-    <header class="fixed w-full z-50 bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm shadow-sm">
+    <header class="fixed w-full z-50 bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm shadow-sm mb-30">
         <div class="container mx-auto px-6 py-4 flex justify-between items-center">
             <div class="flex items-center space-x-2">
-                <div class="w-10 h-10 rounded-full bg-gradient-to-r from-accent to-highlight flex items-center justify-center">
-                    <span class="text-white font-bold">WD</span>
+                <div class="w-14 h-10flex items-center justify-center">
+                    <!-- Logo -->
+                    <?php
+                    if (has_custom_logo()) {
+                        the_custom_logo();
+                    } else {
+                        echo '<span class=" rounded-full bg-gradient-to-r from-accent to-highlight text-white font-bold">SA</span>';
+                    }
+                    ?>
                 </div>
                 <a href="<?php echo home_url(); ?>" class="text-xl font-bold"><?php bloginfo('name'); ?></a>
             </div>
 
-            <nav class="hidden md:flex space-x-8">
+            <nav class="hidden md:flex ">
                 <?php
                 wp_nav_menu(array(
                     'theme_location' => 'primary-menu',
