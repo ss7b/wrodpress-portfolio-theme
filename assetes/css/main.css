@@ -1,4 +1,9 @@
 /* header */
+:root {
+    --primary: #3b82f6; /* تغيير حسب ألوانك */
+    --accent: #8b5cf6;  /* تغيير حسب ألوانك */
+    --highlight: #10b981; /* تغيير حسب ألوانك */
+}
 * {
     box-sizing: border-box;
     margin: 0;
@@ -67,3 +72,38 @@ select:focus {
 .gradient-bg {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }
+.pagination .page-numbers {
+    padding: 10px 16px;
+    border: 2px solid #f1f5f9;
+    border-radius: 12px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.pagination .page-numbers.current {
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    color: white;
+    border-color: transparent;
+}
+
+.pagination .page-numbers:not(.current):hover {
+    border-color: var(--primary);
+    color: var(--primary);
+    transform: translateY(-2px);
+}
+
+.line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+

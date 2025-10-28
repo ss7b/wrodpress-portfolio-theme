@@ -35,7 +35,7 @@ function devportfolio_scripts()
     // swiper
 
 
-    wp_enqueue_script('main-js', get_template_directory_uri() . '/assetes/js/main.js', array(), '2.0.2', true);
+    wp_enqueue_script('main-js', get_template_directory_uri() . '/assetes/js/main.js', array(), '2.0.3', true);
 }
 add_action('wp_enqueue_scripts', 'devportfolio_scripts');
 
