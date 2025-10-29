@@ -2,8 +2,9 @@
 :root {
     --primary: #3b82f6; /* تغيير حسب ألوانك */
     --accent: #8b5cf6;  /* تغيير حسب ألوانك */
-    --highlight: #10b981; /* تغيير حسب ألوانك */
+    
 }
+
 * {
     box-sizing: border-box;
     margin: 0;

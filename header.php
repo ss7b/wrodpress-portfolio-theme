@@ -58,7 +58,7 @@
             }
 
             header nav li .sub-menu {
-            @apply absolute bg-white/90 dark:bg-gray-900/90 shadow-lg rounded-lg w-48 top-[65%] opacity-0 invisible transition-opacity duration-300 ease-in-out overflow-hidden;
+            @apply absolute bg-white/90 dark:bg-gray-900/90 shadow-sm rounded-md w-48 top-[63%] opacity-0 invisible transition-opacity duration-300 ease-in-out overflow-hidden;
             }
 
             header nav li .sub-menu li a {
@@ -94,7 +94,7 @@
                     }
                     ?>
                 </div>
-                <a href="<?php echo home_url(); ?>" class="text-xl font-bold"><?php bloginfo('name'); ?></a>
+                <!-- <a href="<?php echo home_url(); ?>" class="text-xl font-bold"><?php bloginfo('name'); ?></a> -->
             </div>
 
             <nav class="hidden md:flex ">

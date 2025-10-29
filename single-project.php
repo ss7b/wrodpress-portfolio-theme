@@ -7,11 +7,16 @@
             <div class="flex flex-col lg:flex-row justify-between items-start gap-8 mb-8">
                 <!-- العنوان والتصنيفات -->
                 <div class="flex-1">
-                    
-                    <h1 class="text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-6 leading-tight">
-                        <?php the_title(); ?>
-                    </h1>
 
+                    
+                    <h1 class="text-4xl lg:text-5xl font-bold mb-6 leading-tight">
+                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">
+                            <?php the_title(); ?>
+                        </span>
+                    </h1>
+                    <div class="inline-block mb-4">
+                        <div class="w-20 h-1 bg-gradient-to-r from-primary to-accent mx-auto rounded-full"></div>
+                    </div>
                     <?php
                     $project_categories = get_the_terms(get_the_ID(), 'project_category');
                     if ($project_categories):
@@ -124,73 +129,73 @@
                 </div>
                 <div class="p-8">
                     <!-- معلومات المشروع الإضافية -->
-                    
-            <!-- معلومات المشروع المصغرة -->
-            <div class=" p-6">
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                    <?php if (get_field('project_client')): ?>
-                        <div class="flex items-center space-x-3 p-3 bg-white dark:bg-gray-800 rounded-lg shadow-sm">
-                            <div class="bg-accent/10 w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0">
-                                <i class="fas fa-building text-accent"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-medium text-gray-700 dark:text-gray-300 text-xs mb-1">العميل</h4>
-                                <p class="text-gray-900 dark:text-white font-medium"><?php echo esc_html(get_field('project_client')); ?></p>
-                            </div>
-                        </div>
-                    <?php endif; ?>
 
-                    <?php if (get_field('project_date')): ?>
-                        <div class="flex items-center space-x-3 p-3 bg-white dark:bg-gray-800 rounded-lg shadow-sm">
-                            <div class="bg-primary/10 w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0">
-                                <i class="fas fa-calendar-alt text-primary"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-medium text-gray-700 dark:text-gray-300 text-xs mb-1">تاريخ التسليم</h4>
-                                <p class="text-gray-900 dark:text-white font-medium"><?php echo esc_html(get_field('project_date')); ?></p>
-                            </div>
-                        </div>
-                    <?php endif; ?>
-
-                    <?php if (get_field('project_duration')): ?>
-                        <div class="flex items-center space-x-3 p-3 bg-white dark:bg-gray-800 rounded-lg shadow-sm">
-                            <div class="bg-green-500/10 w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0">
-                                <i class="fas fa-clock text-green-500"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-medium text-gray-700 dark:text-gray-300 text-xs mb-1">مدة المشروع</h4>
-                                <p class="text-gray-900 dark:text-white font-medium"><?php echo esc_html(get_field('project_duration')); ?></p>
-                            </div>
-                        </div>
-                    <?php endif; ?>
-
-                    <?php
-                    $project_technologies = get_the_terms(get_the_ID(), 'project_technology');
-                    if ($project_technologies):
-                    ?>
-                        <div class="flex items-center space-x-3 p-3 bg-white dark:bg-gray-800 rounded-lg shadow-sm">
-                            <div class="bg-purple-500/10 w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0">
-                                <i class="fas fa-code text-purple-500"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-medium text-gray-700 dark:text-gray-300 text-xs mb-1">التقنيات</h4>
-                                <div class="flex flex-wrap gap-1">
-                                    <?php foreach (array_slice($project_technologies, 0, 2) as $tech): ?>
-                                        <span class="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-2 py-1 rounded text-xs font-medium">
-                                            <?php echo esc_html($tech->name); ?>
-                                        </span>
-                                    <?php endforeach; ?>
-                                    <?php if (count($project_technologies) > 2): ?>
-                                        <span class="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-2 py-1 rounded text-xs font-medium">
-                                            +<?php echo count($project_technologies) - 2; ?>
-                                        </span>
-                                    <?php endif; ?>
+                    <!-- معلومات المشروع المصغرة -->
+                    <div class=" p-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                            <?php if (get_field('project_client')): ?>
+                                <div class="flex items-center space-x-3 p-3 bg-white dark:bg-gray-800 rounded-lg shadow-sm">
+                                    <div class="bg-accent/10 w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0">
+                                        <i class="fas fa-building text-accent"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-medium text-gray-700 dark:text-gray-300 text-xs mb-1">العميل</h4>
+                                        <p class="text-gray-900 dark:text-white font-medium"><?php echo esc_html(get_field('project_client')); ?></p>
+                                    </div>
                                 </div>
-                            </div>
+                            <?php endif; ?>
+
+                            <?php if (get_field('project_date')): ?>
+                                <div class="flex items-center space-x-3 p-3 bg-white dark:bg-gray-800 rounded-lg shadow-sm">
+                                    <div class="bg-primary/10 w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0">
+                                        <i class="fas fa-calendar-alt text-primary"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-medium text-gray-700 dark:text-gray-300 text-xs mb-1">تاريخ التسليم</h4>
+                                        <p class="text-gray-900 dark:text-white font-medium"><?php echo esc_html(get_field('project_date')); ?></p>
+                                    </div>
+                                </div>
+                            <?php endif; ?>
+
+                            <?php if (get_field('project_duration')): ?>
+                                <div class="flex items-center space-x-3 p-3 bg-white dark:bg-gray-800 rounded-lg shadow-sm">
+                                    <div class="bg-green-500/10 w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0">
+                                        <i class="fas fa-clock text-green-500"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-medium text-gray-700 dark:text-gray-300 text-xs mb-1">مدة المشروع</h4>
+                                        <p class="text-gray-900 dark:text-white font-medium"><?php echo esc_html(get_field('project_duration')); ?></p>
+                                    </div>
+                                </div>
+                            <?php endif; ?>
+
+                            <?php
+                            $project_technologies = get_the_terms(get_the_ID(), 'project_technology');
+                            if ($project_technologies):
+                            ?>
+                                <div class="flex items-center space-x-3 p-3 bg-white dark:bg-gray-800 rounded-lg shadow-sm">
+                                    <div class="bg-purple-500/10 w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0">
+                                        <i class="fas fa-code text-purple-500"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-medium text-gray-700 dark:text-gray-300 text-xs mb-1">التقنيات</h4>
+                                        <div class="flex flex-wrap gap-1">
+                                            <?php foreach (array_slice($project_technologies, 0, 2) as $tech): ?>
+                                                <span class="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-2 py-1 rounded text-xs font-medium">
+                                                    <?php echo esc_html($tech->name); ?>
+                                                </span>
+                                            <?php endforeach; ?>
+                                            <?php if (count($project_technologies) > 2): ?>
+                                                <span class="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-2 py-1 rounded text-xs font-medium">
+                                                    +<?php echo count($project_technologies) - 2; ?>
+                                                </span>
+                                            <?php endif; ?>
+                                        </div>
+                                    </div>
+                                </div>
+                            <?php endif; ?>
                         </div>
-                    <?php endif; ?>
-                </div>
-            </div>
+                    </div>
 
                     <!-- محتوى المشروع -->
                     <div class="prose prose-lg max-w-none dark:prose-invert prose-headings:font-bold prose-headings:text-gray-900 dark:prose-headings:text-white prose-p:text-gray-600 dark:prose-p:text-gray-300 prose-a:text-accent hover:prose-a:text-primary prose-img:rounded-xl prose-img:shadow-md">
