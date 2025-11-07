@@ -17,6 +17,8 @@ function devportfolio_scripts()
 
     // تسجيل وتضمين Swiper JS
     wp_enqueue_script('swiper', 'https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js', array(), '12.0.0', true);
+    wp_enqueue_script('motion', 'https://cdn.jsdelivr.net/npm/motion@latest/dist/motion.js', array(), '', true);
+    
 
     // Tailwind CSS
     wp_enqueue_script('tailwind-config', get_template_directory_uri() . '/js/tailwind-config.js', array(), '1.0', true);

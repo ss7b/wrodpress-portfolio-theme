@@ -23,10 +23,10 @@
                     ?>
                         <div class="flex flex-wrap gap-3 mb-6">
                             <?php foreach ($project_categories as $category): ?>
-                                <span class="bg-gradient-to-r from-accent to-primary text-white px-4 py-2 rounded-full text-sm font-medium shadow-lg flex items-center">
+                                <a href="<?php echo  esc_url(get_category_link($category->term_id)); ?>" class="bg-gradient-to-r from-accent to-primary text-white px-4 py-2 rounded-full text-sm font-medium shadow-lg flex items-center">
                                     <i class="fas fa-tag mr-2 text-white/80"></i>
                                     <?php echo esc_html($category->name); ?>
-                                </span>
+                                </a>
                             <?php endforeach; ?>
                         </div>
                     <?php endif; ?>
@@ -220,7 +220,7 @@
                 <h2 class="text-2xl font-bold mb-8 text-gray-900 dark:text-white">Related Projects</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     <?php while ($related_projects->have_posts()): $related_projects->the_post(); ?>
-                        <?php get_template_part( 'template-parts/content', 'card' ); ?>
+                        <?php get_template_part('template-parts/content', 'card'); ?>
                     <?php endwhile;
                     wp_reset_postdata(); ?>
                 </div>

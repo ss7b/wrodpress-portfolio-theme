@@ -35,7 +35,7 @@ function devportfolio_about_customize_register($wp_customize) {
         'type' => 'text',
     ));
 
-    // socail links
+    // social links
     // whatsapp
         $wp_customize->add_setting('whatsapp_url', array(
         'default' => '',
