@@ -13,7 +13,6 @@
 
 
 <!-- Experience Section -->
-<?php get_template_part('template-parts/sections/section', 'experience'); ?>
 
 
 <!-- Projects Section -->

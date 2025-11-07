@@ -22,6 +22,7 @@ function devportfolio_about_customize_register($wp_customize) {
         'section' => 'about_section',
         'settings' => 'about_image',
     )));
+    
     // About Section Title
     $wp_customize->add_setting('about_section_title', array(
         'default' => 'About Me',
@@ -33,6 +34,33 @@ function devportfolio_about_customize_register($wp_customize) {
         'section' => 'about_section',
         'type' => 'text',
     ));
+
+    // socail links
+    // whatsapp
+        $wp_customize->add_setting('whatsapp_url', array(
+        'default' => '',
+        'sanitize_callback' => 'esc_url_raw',
+    ));
+
+    $wp_customize->add_control('whatsapp_url', array(
+        'label' => __('About WhatsApp Link', 'devportfolio'),
+        'section' => 'about_section',
+        'type' => 'url',
+    ));
+
+    // git hub
+    $wp_customize->add_setting('github_url', array(
+        'default' => '',
+        'sanitize_callback' => 'esc_url_raw',
+    ));
+
+    $wp_customize->add_control('github_url', array(
+        'label' => __('About Github Link', 'devportfolio'),
+        'section' => 'about_section',
+        'type' => 'url',
+    ));
+
+
 
     // About Title
     $wp_customize->add_setting('about_title', array(
