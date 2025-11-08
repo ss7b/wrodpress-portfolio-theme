@@ -46,28 +46,35 @@ function skills_shortcode($atts)
             'numberposts' => -1,
         ));
 
+        $animation_index = 0;
         foreach ($skills as $skill) {
             $icon = get_post_meta($skill->ID, 'skill_icon', true);
             $technologies = get_post_meta($skill->ID, 'skill_technologies', true);
         ?>
-            <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow animate-fadeIn">
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 h-full flex flex-col"
+                 data-aos="fade-up" 
+                 data-aos-delay="<?php echo $animation_index * 100; ?>"
+                 data-aos-duration="600">
                 <div class="w-14 h-14 rounded-full bg-primary flex items-center justify-center mb-4">
                     <i class="<?php echo $icon; ?> text-white text-xl"></i>
                 </div>
                 <h3 class="text-xl font-semibold mb-2"><?php echo $skill->post_title; ?></h3>
-                <?php echo $skill->post_content; ?>
+                <div class="text-gray-600 dark:text-gray-300 mb-4 flex-grow">
+                    <?php echo $skill->post_content; ?>
+                </div>
                 <div class="flex flex-wrap gap-2 mt-2">
                     <?php
                     if ($technologies) {
                         $tech_array = explode(',', $technologies);
                         foreach ($tech_array as $tech) {
-                            echo '<span class="px-3 py-1 bg-highlight/20 text-highlight rounded-full text-sm">' . trim($tech) . '</span>';
+                            echo '<span class="px-3 py-1 bg-highlight/20 text-highlight dark:text-white rounded-full text-sm">' . trim($tech) . '</span>';
                         }
                     }
                     ?>
                 </div>
             </div>
         <?php
+            $animation_index++;
         }
         ?>
     </div>

@@ -68,6 +68,30 @@
             header nav .menu-item-has-children:hover > .sub-menu {
             @apply opacity-100 visible;
             }
+
+            /* mobile */
+            #mobile-menu .menu-item-has-children::after {
+            content: "\f107"; /* سهم للأسفل */
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            display: inline-block;
+            margin-left: 8px;
+            vertical-align: middle;
+            }
+
+            #mobile-menu .menu-item-has-children .sub-menu { 
+            display: none;
+            }
+
+            /* عند الهوفر */
+            #mobile-menu .menu-item-has-children:hover > .sub-menu {
+            display: block;
+            }
+
+            #mobile-menu .menu-item-has-children:hover::after {
+            content: ""; /* إخفاء السهم */
+            }
+
         
         .dark {
             @apply bg-gray-900 text-white;

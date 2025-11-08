@@ -1,10 +1,6 @@
 <?php
-
 /**
- * قالب بطاقة المشروع
- * 
- * @param WP_Post $project كائن المشروع
- * @param array $args إعدادات إضافية
+ * قالب بطاقة المشروع مع تأثيرات الحركة
  */
 
 // الحصول على بيانات إضافية للمشروع
@@ -13,16 +9,16 @@ $project_image = get_the_post_thumbnail_url($project_id, 'medium');
 $project_categories = get_the_terms($project_id, 'project_category');
 $project_technologies = get_the_terms($project_id, 'project_technology');
 $project_url = get_field('project_url', $project_id);
-$project_year = get_field('project_year', $project_id); // تأكد من وجود هذا الحقل
+$project_year = get_field('project_year', $project_id);
 ?>
 
-<!-- بطاقة المشروع -->
-<div class="group bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 project-item transform hover:-translate-y-2"
+<!-- بطاقة المشروع مع تأثيرات الحركة -->
+<div class="group bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 project-item transform hover:-translate-y-2 h-full flex flex-col"
     data-categories="<?php echo $project_categories ? esc_attr(implode(' ', wp_list_pluck($project_categories, 'slug'))) : ''; ?>"
     data-technologies="<?php echo $project_technologies ? esc_attr(implode(' ', wp_list_pluck($project_technologies, 'slug'))) : ''; ?>">
 
     <!-- صورة المشروع -->
-    <div class="h-52 relative overflow-hidden">
+    <div class="h-52 relative overflow-hidden flex-shrink-0">
         <?php if (has_post_thumbnail()) : ?>
             <img
                 src="<?php echo get_the_post_thumbnail_url($project_id, 'large'); ?>"
@@ -41,14 +37,12 @@ $project_year = get_field('project_year', $project_id); // تأكد من وجو�
         <?php if ($project_categories): ?>
             <div class="absolute bottom-2 left-4">
                 <?php
-                // نظهر أول تصنيفين ثم نحسب الباقي
                 $visible = array_slice($project_categories, 0, 2);
                 $hidden = array_slice($project_categories, 2);
                 foreach ($visible as $category):
-                    // تأكد أن $category يحتوي term_id و name
                     $cat_link = get_category_link($category->term_id);
                 ?>
-                    <a href="<?php echo  esc_url($cat_link); ?>"
+                    <a href="<?php echo esc_url($cat_link); ?>"
                         class="bg-primary text-white text-xs px-3 py-1.5 rounded-full mr-2 shadow-lg"
                         title="<?php echo esc_attr(sprintf('عرض التصنيف: %s', $category->name)); ?>">
                         <?php echo esc_html($category->name); ?>
@@ -56,7 +50,6 @@ $project_year = get_field('project_year', $project_id); // تأكد من وجو�
                 <?php endforeach; ?>
 
                 <?php if (count($project_categories) > 2):
-                    // رابط +N إلى أول تصنيف مخفي (يمكن تغييره حسب الرغبة)
                     $first_hidden = reset($hidden);
                     $first_hidden_link = $first_hidden ? get_category_link($first_hidden->term_id) : '#';
                 ?>
@@ -86,17 +79,17 @@ $project_year = get_field('project_year', $project_id); // تأكد من وجو�
     </div>
 
     <!-- محتوى البطاقة -->
-    <div class="p-6">
+    <div class="p-6 flex-grow flex flex-col">
         <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3 group-hover:text-primary transition-colors duration-200">
             <?php the_title(); ?>
         </h3>
 
-        <p class="text-gray-600 dark:text-gray-300 mb-4 leading-relaxed line-clamp-3">
+        <p class="text-gray-600 dark:text-gray-300 mb-4 leading-relaxed line-clamp-3 flex-grow">
             <?php echo get_the_excerpt(); ?>
         </p>
 
-        <!--التقنيات الأزرار -->
-        <div class="flex justify-between items-center">
+        <!-- التقنيات والأزرار -->
+        <div class="flex justify-between items-center mt-auto">
             <?php if ($project_technologies): ?>
                 <div class="flex flex-wrap gap-2">
                     <?php foreach ($project_technologies as $tech): ?>
@@ -108,7 +101,7 @@ $project_year = get_field('project_year', $project_id); // تأكد من وجو�
             <?php endif; ?>
 
             <?php if ($project_url): ?>
-                <a href="<?php echo esc_url($project_url); ?>" target="_blank" class="text-gray-500 hover:text-accent transition-colors" title="Live Demo">
+                <a href="<?php echo esc_url($project_url); ?>" target="_blank" class="text-gray-500 hover:text-accent transition-colors ml-2" title="Live Demo">
                     <i class="fas fa-external-link-alt"></i>
                 </a>
             <?php endif; ?>

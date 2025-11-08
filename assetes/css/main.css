@@ -4,7 +4,9 @@
     --accent: #8b5cf6;  /* تغيير حسب ألوانك */
     
 }
-
+html {
+  scroll-behavior: smooth;
+}
 * {
     box-sizing: border-box;
     margin: 0;
