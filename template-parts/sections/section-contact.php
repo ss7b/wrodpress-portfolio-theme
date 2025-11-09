@@ -59,11 +59,13 @@
             </div>
 
             <div class="md:w-1/2">
-                <form id="contact-form" class="space-y-4">
+                <form id="contact-form" class="space-y-4" method="post">
+                    <?php wp_nonce_field('contact_form_nonce', 'nonce'); ?>
+                    
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                             <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your Name</label>
-                            <input type="text" id="name" name="name" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-highlight focus:border-highlight dark:bg-gray-700 dark:border-gray-600 dark:text-white" required>
+                            <input type="text" id="name" name="name" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-highlight focus:border-highlight dark:bg-gray-700 dark:border-gray-600 dark:text-white" required minlength="2" maxlength="100">
                         </div>
                         <div>
                             <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your Email</label>
@@ -72,17 +74,90 @@
                     </div>
                     <div>
                         <label for="subject" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Subject</label>
-                        <input type="text" id="subject" name="subject" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-highlight focus:border-highlight dark:bg-gray-700 dark:border-gray-600 dark:text-white" required>
+                        <input type="text" id="subject" name="subject" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-highlight focus:border-highlight dark:bg-gray-700 dark:border-gray-600 dark:text-white" required minlength="5" maxlength="200">
                     </div>
                     <div>
                         <label for="message" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your Message</label>
-                        <textarea id="message" name="message" rows="5" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-highlight focus:border-highlight dark:bg-gray-700 dark:border-gray-600 dark:text-white" required></textarea>
+                        <textarea id="message" name="message" rows="5" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-highlight focus:border-highlight dark:bg-gray-700 dark:border-gray-600 dark:text-white" required minlength="10" maxlength="2000"></textarea>
                     </div>
-                    <button type="submit" class="px-6 py-3 bg-highlight text-white font-medium rounded-lg hover:bg-accent transition-colors">Send Message</button>
+                    <button type="submit" class="px-6 py-3 bg-highlight text-white font-medium rounded-lg hover:bg-accent transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                        <span class="submit-text">Send Message</span>
+                        <span class="loading-text hidden">جاري الإرسال...</span>
+                    </button>
                 </form>
 
-                <div id="form-message" class="mt-4 hidden"></div>
+                <div id="form-message" class="mt-4 p-4 rounded-lg hidden"></div>
             </div>
         </div>
     </div>
 </section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const contactForm = document.getElementById('contact-form');
+    const submitBtn = contactForm?.querySelector('button[type="submit"]');
+    const submitText = contactForm?.querySelector('.submit-text');
+    const loadingText = contactForm?.querySelector('.loading-text');
+    const messageDiv = document.getElementById('form-message');
+    
+    if (contactForm) {
+        contactForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // تعطيل الزر أثناء الإرسال
+            if (submitBtn && submitText && loadingText) {
+                submitBtn.disabled = true;
+                submitText.classList.add('hidden');
+                loadingText.classList.remove('hidden');
+            }
+            
+            // إخفاء الرسائل السابقة
+            if (messageDiv) {
+                messageDiv.classList.add('hidden');
+            }
+            
+            try {
+                const formData = new FormData(this);
+                formData.append('action', 'send_contact_form');
+                
+                const response = await fetch('<?php echo admin_url("admin-ajax.php"); ?>', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const data = await response.json();
+                
+                if (messageDiv) {
+                    if (data.success) {
+                        messageDiv.className = 'mt-4 p-4 bg-green-100 text-green-700 rounded-lg border border-green-200';
+                        contactForm.reset();
+                    } else {
+                        messageDiv.className = 'mt-4 p-4 bg-red-100 text-red-700 rounded-lg border border-red-200';
+                    }
+                    messageDiv.textContent = data.data;
+                    messageDiv.classList.remove('hidden');
+                    
+                    // إخفاء الرسالة بعد 10 ثواني
+                    setTimeout(() => {
+                        messageDiv.classList.add('hidden');
+                    }, 10000);
+                }
+                
+            } catch (error) {
+                if (messageDiv) {
+                    messageDiv.className = 'mt-4 p-4 bg-red-100 text-red-700 rounded-lg border border-red-200';
+                    messageDiv.textContent = 'حدث خطأ في الشبكة. يرجى المحاولة مرة أخرى.';
+                    messageDiv.classList.remove('hidden');
+                }
+            } finally {
+                // إعادة تمكين الزر
+                if (submitBtn && submitText && loadingText) {
+                    submitBtn.disabled = false;
+                    submitText.classList.remove('hidden');
+                    loadingText.classList.add('hidden');
+                }
+            }
+        });
+    }
+});
+</script>
